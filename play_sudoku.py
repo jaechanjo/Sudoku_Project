@@ -1,0 +1,43 @@
+import random
+
+# 사용자가 직접 스도쿠를 플레이하는 함수
+def play_sudoku():
+    board = generate_sudoku()  # 스도쿠 퍼즐을 생성
+    print("스도쿠 게임을 시작합니다!")
+    print_board(board)
+
+    while True: #반복문
+        # 사용자가 입력한 값으로 행, 열, 숫자를 받음
+        try:
+            row = int(input("행을 입력하세요 (1-9): ")) - 1 # 파이썬 인덱스 0부터 시작
+            col = int(input("열을 입력하세요 (1-9): ")) - 1
+            num = int(input("숫자를 입력하세요 (1-9): "))
+
+            # 유효한 입력인지 확인
+            if not (0 <= row <= 8 and 0 <= col <= 8 and 1 <= num <= 9):
+                print("잘못된 입력입니다. 1에서 9 사이의 숫자를 입력하세요.")
+                continue
+
+            if board[row][col] != 0:
+                print("이미 값이 입력된 칸입니다.")
+                continue
+
+            # 숫자가 해당 위치에 올바르게 입력될 수 있는지 확인 (검증)
+            if is_valid(board, row, col, num):
+                board[row][col] = num  # 입력한 숫자를 보드에 반영
+                print_board(board)
+
+                # 입력 값이 추가될 때마다(사용자 게임 진행 마다), 스도쿠가 완성되었는지 확인
+                if not find_empty_location(board): # 빈 곳을 못 찾으면!
+                    print("축하합니다! 스도쿠를 완성했습니다.")
+                    break
+            else:
+                print("조건에 맞지 않는 값입니다. 다시 값을 입력해주세요!.")
+                continue
+        except ValueError:
+            print("잘못된 입력입니다. 숫자를 입력하세요.")
+
+if __name__ == "__main__":
+
+    # 프로그램 실행
+    play_sudoku()
